@@ -1,2 +1,2 @@
-* PHP Projects
+PHP Projects
   - Copisteria
