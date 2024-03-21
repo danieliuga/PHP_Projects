@@ -1065,6 +1065,7 @@
                     <a href="{{ url('/dashboard') }}" class="dashboard">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="login">Log in</a>
+                    <a href="/google-auth/redirect" class="login">Google</a>
 
                     @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="register">Register</a>

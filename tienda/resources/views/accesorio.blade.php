@@ -69,118 +69,42 @@
                 <a href="/compras" class="block py-4 text-white hover:bg-gray-500">Compras</a>
             @endrole
         </nav>
-
-        <header class="bg-gradient-to-r from-blue-500 to-blue-400 py-5 px-4 rounded-b-lg text-center -mt-14">
-            <h1 class="text-white text-3xl font-bold tracking-wide mb-4">Supercars Shop</h1>
-            <div class="flex items-center justify-around bg-blue-500 w-64 h-10 rounded-lg shadow-lg mx-auto">
-                <a href="/">
-                    <button
-                        class="button w-10 h-10 rounded-full bg-transparent text-white flex items-center justify-center transition-transform duration-300 ease-in-out cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"
-                            stroke-width="0" fill="currentColor" stroke="currentColor" class="text-xl">
-                            <path
-                                d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
-                            </path>
-
-                        </svg>
-                    </button>
-                </a>
-                @role('editor')
-                    <a href="/modificar">
-                        <button
-                            class="button w-10 h-10 rounded-full bg-transparent text-white flex items-center justify-center transition-transform duration-300 ease-in-out cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" aria-hidden="true"
-                                viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor" class="text-xl">
-                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linejoin="round"
-                                    stroke-linecap="round"></path>
-                            </svg>
-                        </button>
+        @extends('layouts.header')
+        @section('content')
+            <div class="grid grid-cols-3 gap-4 w-full max-w-full mt-10 mb-10">
+                @foreach ($accesorios as $accesorio)
+                    <div class="accessory-listing">
+                        <img src="{{ asset($accesorio->imagen) }}" alt="{{ $accesorio->modelo }}"
+                            class="mx-auto object-contain h-48 max-w-full" />
+                        <h3 class="mt-4 text-gray-900 mb-4">{{ $accesorio->modelo }}</h3>
+                        <p class="text-gray-600 flex-grow mb-4">Precio: {{ number_format($accesorio->precio, 2) }} €</p>
+                        <p class="text-gray-600 flex-grow mb-4">Stock: {{ number_format($accesorio->stock) }}</p>
+                        <p class="text-gray-600 flex-grow mb-4">Descripción: {{ $accesorio->descripcion }}</p>
+                        <a href="/comprar/accesorio/{{ $accesorio->modelo }}"
+                            class="block py-2 px-4 bg-blue-500 text-white rounded-md transition-colors duration-300 ease-in-out text-center hover:bg-blue-600"
+                            @guest disabled @endguest>
+                            @auth
+                                @foreach (auth()->user()->cuenta_bancarias as $cuenta_bancaria)
+                                    @if ($cuenta_bancaria->dinero >= $accesorio->precio)
+                                        Comprar
+                                    @else
+                                        No suficiente dinero
+                                    @endif
+                                @endforeach
+                            @else
+                                No hay cuenta bancaria asociada
+                    @endif
                     </a>
-                @endrole
-                <a href="/dashboard">
-                    <button
-                        class="button w-10 h-10 rounded-full bg-transparent text-white flex items-center justify-center transition-transform duration-300 ease-in-out cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                            stroke-width="0" fill="currentColor" stroke="currentColor" class="text-xl">
-                            <path
-                                d="M12 2.5a5.5 5.5 0 0 1 3.096 10.047 9.005 9.005 0 0 1 5.9 8.181.75.75 0 1 1-1.499.044 7.5 7.5 0 0 0-14.993 0 .75.75 0 0 1-1.5-.045 9.005 9.005 0 0 1 5.9-8.18A5.5 5.5 0 0 1 12 2.5ZM8 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z">
-                            </path>
-                        </svg>
-                    </button>
-                </a>
-                <a href="/carrito">
-                    <button
-                        class="button w-10 h-10 rounded-full bg-transparent text-white flex items-center justify-center transition-transform duration-300 ease-in-out cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" stroke-linejoin="round"
-                            stroke-linecap="round" viewBox="0 0 24 24" stroke-width="2" fill="none"
-                            stroke="currentColor" class="text-xl">
-                            <circle r="1" cy="21" cx="9"></circle>
-                            <circle r="1" cy="21" cx="20"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                    </button>
-                </a>
-                <a href="/valoraciones">
-                    <button
-                        class="button w-10 h-10 rounded-full bg-transparent text-white flex items-center justify-center transition-transform duration-300 ease-in-out cursor-pointer">
-                        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m28 30h8a3 3 0 0 1 3 3v23a0 0 0 0 1 0 0h-14a0 0 0 0 1 0 0v-23a3 3 0 0 1 3-3z"
-                                fill="#4aa5ff" />
-                            <circle cx="32" cy="18" fill="#e6f3ff" r="15" />
-                            <path
-                                d="m32 24.98757 5.03973 1.79213a1.382 1.382 0 0 0 1.84451-1.34011l-.14705-5.34687 3.26181-4.23928a1.382 1.382 0 0 0 -.70454-2.16835l-5.13062-1.51241-3.02384-4.41215a1.382 1.382 0 0 0 -2.27994 0l-3.02384 4.41215-5.13062 1.51241a1.382 1.382 0 0 0 -.70454 2.16835l3.26178 4.23928-.14705 5.34687a1.382 1.382 0 0 0 1.84451 1.34011z"
-                                fill="#4aa5ff" />
-                            <g fill="#e6f3ff">
-                                <path
-                                    d="m10 38h8a3 3 0 0 1 3 3v15a0 0 0 0 1 0 0h-14a0 0 0 0 1 0 0v-15a3 3 0 0 1 3-3z" />
-                                <path
-                                    d="m46 35h8a3 3 0 0 1 3 3v18a0 0 0 0 1 0 0h-14a0 0 0 0 1 0 0v-18a3 3 0 0 1 3-3z" />
-                                <rect height="4" rx="2" width="58" x="3" y="56" />
-                            </g>
-                            <path
-                                d="m32 34a16.01839 16.01839 0 0 0 16.00006-15.99988c-.87591-21.22012-31.12091-21.22626-32.00006-.00012a16.01833 16.01833 0 0 0 16 16zm0-30a14.01579 14.01579 0 0 1 14.00006 13.99988c-.76606 18.56762-27.2312 18.57306-28.00006.00012a14.01572 14.01572 0 0 1 14-14z"
-                                fill="#21257c" />
-                            <path
-                                d="m59 55h-1v-17a4.00427 4.00427 0 0 0 -4-4h-8a4.00427 4.00427 0 0 0 -4 4v17h-2v-20.41986a1.00011 1.00011 0 0 0 -2-.00006v18.41992h-12v-18.41992a1 1 0 0 0 -2 0v20.41992h-2v-14a4.00427 4.00427 0 0 0 -4-4h-8a4.00427 4.00427 0 0 0 -4 4v14h-1a3.0002 3.0002 0 0 0 .0001 6h53.9999a3.0002 3.0002 0 0 0 0-6zm-13-19h8a2.00229 2.00229 0 0 1 2 2v15h-12v-15a2.00229 2.00229 0 0 1 2-2zm-36 3h8a2.00229 2.00229 0 0 1 2 2v12h-12v-12a2.00229 2.00229 0 0 1 2-2zm49 20h-54a1.00013 1.00013 0 0 1 .00006-2h53.99994a1.00013 1.00013 0 0 1 0 2z"
-                                fill="#21257c" />
-                        </svg>
-                    </button>
-                </a>
+                </div>
+                @endforeach
+
             </div>
-        </header>
 
-        <div class="grid grid-cols-3 gap-4 w-full max-w-full mt-10 mb-10">
-            @foreach ($accesorios as $accesorio)
-                <div class="accessory-listing">
-                    <img src="{{ asset($accesorio->imagen) }}" alt="{{ $accesorio->modelo }}" class="mx-auto object-contain h-48 max-w-full" />
-                    <h3 class="mt-4 text-gray-900 mb-4">{{ $accesorio->modelo }}</h3>
-                    <p class="text-gray-600 flex-grow mb-4">Precio: {{ number_format($accesorio->precio, 2) }} €</p>
-                    <p class="text-gray-600 flex-grow mb-4">Stock: {{ number_format($accesorio->stock) }}</p>
-                    <p class="text-gray-600 flex-grow mb-4">Descripción: {{ $accesorio->descripcion }}</p>
-                    <a href="/comprar/accesorio/{{ $accesorio->modelo }}"
-                        class="block py-2 px-4 bg-blue-500 text-white rounded-md transition-colors duration-300 ease-in-out text-center hover:bg-blue-600"
-                        @guest disabled @endguest>
-                        @auth
-                            @foreach (auth()->user()->cuenta_bancarias as $cuenta_bancaria)
-                                @if ($cuenta_bancaria->dinero >= $accesorio->precio)
-                                    Comprar
-                                @else
-                                    No suficiente dinero
-                                @endif
-                            @endforeach
-                        @else
-                            No hay cuenta bancaria asociada
-                @endif
-                </a>
+            <div class="bg-black text-white px-2 py-1 rounded-md text-center">
+                <a href="/" class="text-blue-500 hover:underline">Volver a la página principal</a>
             </div>
-            @endforeach
-
-        </div>
-
-        <div class="bg-black text-white px-2 py-1 rounded-md text-center">
-            <a href="/" class="text-blue-500 hover:underline">Volver a la página principal</a>
-        </div>
-        </div>
+            </div>
+        @endsection
     </body>
 
     </html>

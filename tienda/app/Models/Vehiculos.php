@@ -47,3 +47,6 @@ class Vehiculos extends Model
 //routes->console.php
 //escribir codigo necesario
 //php artisan assign-admin-role
+
+// Para linquear las imagenes al storage
+// php artisan storage:link 
